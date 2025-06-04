@@ -1,38 +1,25 @@
+// src/components/Lobby.jsx
 import { useState } from 'react';
 
-export default function Lobby({ socket, onJoin }) {
-  const [username, setUsername] = useState('');
-  const [lobbyId, setLobbyId] = useState('');
-
-  const handleJoin = () => {
-    if (!username || !lobbyId) return alert('Podaj nazwę i ID lobby');
-    socket.emit('join_lobby', { username, lobbyId });
-    onJoin(username, lobbyId);
-  };
-
-  const handleCreate = () => {
-    if (!username || !lobbyId) return alert('Podaj nazwę i ID lobby');
-    socket.emit('create_lobby', { username, lobbyId });
-    onJoin(username, lobbyId);
-  };
+export default function Lobby({ onCreate, onJoin }) {
+  const [name, setName] = useState('');
+  const [lobby, setLobby] = useState('');
 
   return (
-    <div className="lobby">
-      <h2>Lobby</h2>
+    <div className="lobby-form">
+      <h2>Welcome to the DubMaster frontend.</h2>
       <input
-        type="text"
-        placeholder="Nazwa użytkownika"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
       <input
-        type="text"
-        placeholder="ID Lobby"
-        value={lobbyId}
-        onChange={(e) => setLobbyId(e.target.value)}
+        placeholder="Lobby ID"
+        value={lobby}
+        onChange={(e) => setLobby(e.target.value)}
       />
-      <button onClick={handleCreate}>Stwórz Lobby</button>
-      <button onClick={handleJoin}>Dołącz do Lobby</button>
+      <button onClick={() => onCreate(name, lobby)}>Create</button>
+      <button onClick={() => onJoin(name, lobby)}>Join</button>
     </div>
   );
 }
